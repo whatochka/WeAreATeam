@@ -1,0 +1,57 @@
+x-local: &local
+  restart: unless-stopped
+  env_file: .env
+  environment:
+    PYTHONUNBUFFERED: 1
+    PYTHONDONTWRITEBYTECODE: 1
+  links:
+    - database
+  depends_on:
+    database:
+      condition: service_healthy
+    migrations:
+      condition: service_completed_successfully
+
+services:
+  bot:
+    <<: *local
+    container_name: WeAreATeam_bot
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: "python -m bot"
+
+  migrations:
+    <<: *local
+    container_name: WeAreATeam-migrations
+    restart: "no"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      database:
+        condition: service_healthy
+    command: "alembic upgrade head"
+
+  database:
+    image: postgres:16.4-alpine3.20
+    container_name: WeAreATeam_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - WeAreATeam-volume:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+volumes:
+  WeAreATeam-volume:

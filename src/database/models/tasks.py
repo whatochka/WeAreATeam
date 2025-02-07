@@ -4,9 +4,9 @@ import string
 from sqlalchemy import Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
 
-from src.core.ids import TaskId
-from src.database.models._mixins import CreatedAtMixin, UpdatedAtMixin
-from src.database.models.base import BaseAlchemyModel
+from core.ids import TaskId
+from database.models._mixins import CreatedAtMixin, UpdatedAtMixin
+from database.models.base import BaseAlchemyModel
 
 TASK_ID_LEN = 8
 

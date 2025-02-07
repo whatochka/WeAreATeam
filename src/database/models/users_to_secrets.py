@@ -1,9 +1,9 @@
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 
-from src.core.ids import SecretId, UserId
-from src.database.models._mixins import CreatedAtMixin
-from src.database.models.base import BaseAlchemyModel
+from core.ids import SecretId, UserId
+from database.models._mixins import CreatedAtMixin
+from database.models.base import BaseAlchemyModel
 
 
 class UsersToSecretsModel(CreatedAtMixin, BaseAlchemyModel):

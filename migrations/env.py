@@ -9,9 +9,9 @@ from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
-from src.database.config import get_db_config
-from src.database.models import *  # noqa: F403
-from src.database.models.base import BaseAlchemyModel
+from database.config import get_db_config
+from database.models import *  # noqa: F403
+from database.models.base import BaseAlchemyModel
 
 config = context.config
 db_settings = get_db_config()

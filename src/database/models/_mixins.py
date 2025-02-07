@@ -3,7 +3,7 @@ import datetime
 from sqlalchemy import DateTime, func
 from sqlalchemy.orm import Mapped, mapped_column
 
-from src.database.models.base import utc_now
+from database.models.base import utc_now
 
 
 class CreatedAtMixin:

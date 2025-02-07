@@ -1,9 +1,9 @@
 from sqlalchemy import BigInteger, Boolean, Identity, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
 
-from src.core.ids import TgId, UserId
-from src.database.models._mixins import CreatedAtMixin, UpdatedAtMixin
-from src.database.models.base import BaseAlchemyModel
+from core.ids import TgId, UserId
+from database.models._mixins import CreatedAtMixin, UpdatedAtMixin
+from database.models.base import BaseAlchemyModel
 
 
 class UserModel(CreatedAtMixin, UpdatedAtMixin, BaseAlchemyModel):

@@ -1,9 +1,9 @@
 from sqlalchemy import Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
 
-from src.core.ids import ProductId
-from src.database.models._mixins import CreatedAtMixin, UpdatedAtMixin
-from src.database.models.base import BaseAlchemyModel
+from core.ids import ProductId
+from database.models._mixins import CreatedAtMixin, UpdatedAtMixin
+from database.models.base import BaseAlchemyModel
 
 
 class ProductModel(CreatedAtMixin, UpdatedAtMixin, BaseAlchemyModel):

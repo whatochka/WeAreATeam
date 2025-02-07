@@ -1,9 +1,9 @@
 from sqlalchemy import Boolean, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 
-from src.core.ids import TaskId, UserId
-from src.database.models._mixins import CreatedAtMixin, UpdatedAtMixin
-from src.database.models.base import BaseAlchemyModel
+from core.ids import TaskId, UserId
+from database.models._mixins import CreatedAtMixin, UpdatedAtMixin
+from database.models.base import BaseAlchemyModel
 
 
 class UsersToTasksModel(CreatedAtMixin, UpdatedAtMixin, BaseAlchemyModel):

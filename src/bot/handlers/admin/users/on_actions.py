@@ -13,7 +13,6 @@ UserAdminInfoText = Multi(
     Format("<b>{view_user.name}</b> - {role}"),
     Format('<a href="tg://openmessage?user_id={view_user.tg_id}">тык</a>'),
     Format('<a href="tg://user?id={view_user.tg_id}">тык</a>'),
-    Format("Лотерея - {lottery}"),
     Format("ФИО - {fio}", when=F["fio"]),
     Format("Группа - {group}", when=F["group"]),
     Const(" "),

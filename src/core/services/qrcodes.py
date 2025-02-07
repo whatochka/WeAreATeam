@@ -5,11 +5,10 @@ from qrcode.constants import ERROR_CORRECT_L
 from qrcode.image.pure import PyPNGImage
 from qrcode.main import QRCode
 
-from core.ids import ProductId, QuestId, TaskId, UserId
+from core.ids import ProductId, TaskId, UserId
 
 UserIdPrefix = "id_"
 TaskIdPrefix = "task_"
-QuestIdPrefix = "quest_"
 ProductIdPrefix = "product_"
 
 
@@ -33,9 +32,6 @@ class QRCodeService:
     def product_qrcode(self, product_id: ProductId) -> BytesIO:
         return self._generate_qrcode(ProductIdPrefix, product_id)
 
-    def quest_qrcode(self, quest_id: QuestId) -> BytesIO:
-        return self._generate_qrcode(QuestIdPrefix, quest_id)
-
     def task_deeplink(self, task_id: TaskId) -> str:
         return self._generate_deeplink(TaskIdPrefix, task_id)
 
@@ -56,10 +52,3 @@ class QRCodeService:
 
     def _generate_deeplink(self, prefix: str, data: Any) -> str:
         return f"https://t.me/{self.bot_name}?start={prefix}{data}"
-
-
-if __name__ == "__main__":
-    generator = QRCodeService("pandito_bot")
-    with open("test.png", "wb") as f:
-        image = generator.user_qrcode(UserId(2015866626))
-        f.write(image.getvalue())

@@ -1,6 +1,6 @@
 from aiogram import Router
 
-from bot.filters.roles import IsAdmin, IsLottery, IsSeller, IsStager, IsWithRole
+from bot.filters.roles import IsAdmin, IsSeller, IsStager, IsWithRole
 
 from .broadcast.dialogs import broadcast_dialog
 from .logs.router import router as logs_router
@@ -21,7 +21,6 @@ from .shop.router import router as products_routes
 from .tasks.dialogs import create_task_dialog, view_tasks_dialog
 from .tasks.router import router as tasks_router
 from .users.cart.dialogs import user_cart_dialog
-from .users.lottery.dialogs import set_lottery_info_dialog
 from .users.role.dialogs import user_role_dialog
 from .users.router import router as users_router
 from .users.task.dialogs import (
@@ -101,13 +100,6 @@ def include_admin_dialogs(root_router: Router) -> None:
         confirm_task_dialog,
     )
 
-    lottery_router = Router(name=__file__)
-    for observer in stager_router.observers.values():
-        observer.filter(IsLottery())
-    lottery_router.include_routers(
-        set_lottery_info_dialog,
-    )
-
     with_role_router = Router(name=__file__)
     for observer in with_role_router.observers.values():
         observer.filter(IsWithRole())
@@ -117,7 +109,6 @@ def include_admin_dialogs(root_router: Router) -> None:
         admin_router,
         seller_router,
         stager_router,
-        lottery_router,
     )
 
     root_router.include_router(with_role_router)

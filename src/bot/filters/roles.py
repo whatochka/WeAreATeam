@@ -33,11 +33,6 @@ class IsStager(AiogramRoleAccess):
         super().__init__([RightsRole.STAGER, RightsRole.ADMIN])
 
 
-class IsLottery(AiogramRoleAccess):
-    def __init__(self) -> None:
-        super().__init__([RightsRole.LOTTERY, RightsRole.ADMIN])
-
-
 class IsWithRole(AiogramRoleAccess):
     def __init__(self) -> None:
         super().__init__(RightsRole.values())

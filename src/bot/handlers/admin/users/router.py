@@ -9,8 +9,6 @@ from bot.filters.roles import IsAdmin
 from bot.handlers.admin.users.view.states import ViewUserStates
 from core.ids import UserId
 from core.services.qrcodes import UserIdPrefix
-from database.repos.coupons import CouponsRepo
-from database.repos.tickets import TicketsRepo
 from database.repos.users import UsersRepo
 
 router = Router(name=__file__)
@@ -50,21 +48,3 @@ async def delete_user(
     text = "Формат: /delete <user_id>"
     await message.answer(text=text)
     return None
-
-
-@router.message(Command("clear"), IsAdmin())
-async def clear_lottery_user(
-    message: Message,
-    command: CommandObject,
-    tickets_repo: FromDishka[TicketsRepo],
-    coupons_repo: FromDishka[CouponsRepo],
-) -> None:
-    if command.args and command.args.isdigit():
-        user_id = UserId(int(command.args))
-        await tickets_repo.delete(user_id)
-        await coupons_repo.delete_relation(user_id=user_id, coupon_id=None)
-        return
-
-    text = "Формат: /clear <user_id>"
-    await message.answer(text=text)
-    return

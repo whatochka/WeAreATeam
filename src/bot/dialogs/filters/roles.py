@@ -36,11 +36,6 @@ class IsStager(DialogsRoleAccess):
         super().__init__([RightsRole.STAGER, RightsRole.ADMIN])
 
 
-class IsLottery(DialogsRoleAccess):
-    def __init__(self) -> None:
-        super().__init__([RightsRole.LOTTERY, RightsRole.ADMIN])
-
-
 class IsWithRole(DialogsRoleAccess):
     def __init__(self) -> None:
         super().__init__(RightsRole.values())

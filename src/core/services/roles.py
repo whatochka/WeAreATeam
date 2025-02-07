@@ -17,9 +17,6 @@ class RolesService:
     async def is_stager(self, user_id: UserId) -> bool:
         return await self.is_enough_rights(user_id, RightsRole.STAGER)
 
-    async def is_lottery(self, user_id: UserId) -> bool:
-        return await self.is_enough_rights(user_id, RightsRole.LOTTERY)
-
     async def is_enough_rights(self, user_id: UserId, role: RightsRole | None) -> bool:
         user = await self.users_repo.get_by_id(user_id)
         if user is None:

@@ -10,7 +10,6 @@ from core.services.qrcode_saver import QRCodeSaver
 from database.repos.users import UsersRepo
 
 from ..cart.states import CartUserStates
-from ..lottery.states import LotteryUserStates
 from ..role.states import RoleUserStates
 from ..task.view.states import TaskUserStates
 
@@ -99,15 +98,3 @@ async def on_view_task(
 ) -> None:
     user_id: UserId = dialog_manager.dialog_data["view_user_id"]
     await dialog_manager.start(TaskUserStates.task, data={"view_user_id": user_id})
-
-
-async def on_set_lottery_info(
-    _: CallbackQuery,
-    __: Button,
-    dialog_manager: DialogManager,
-) -> None:
-    user_id: UserId = dialog_manager.dialog_data["view_user_id"]
-    await dialog_manager.start(
-        LotteryUserStates.fio,
-        data={"view_user_id": user_id},
-    )

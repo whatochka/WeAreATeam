@@ -9,10 +9,7 @@ from bot.dialogs.filters.roles import IsWithRole
 from .getters import get_user_info
 from .on_actions import (
     on_cart,
-    on_coupon,
     on_help,
-    on_lottery,
-    on_quest,
     on_shop,
     on_transfer_funds,
 )
@@ -32,15 +29,6 @@ menu_dialog = Dialog(
                 id="transfer",
                 on_click=on_transfer_funds,
                 when=F["balance"] > 0,
-            ),
-            Button(Const("🗺️ Квест"), id="quest", on_click=on_quest, when=F["quests"]),
-            GoToTaskButton(),
-            Button(Const("🎟️ Лотерея"), id="lottery", on_click=on_lottery),
-            Button(
-                Const("🛴 Купон"),
-                id="coupon",
-                on_click=on_coupon,
-                when=F["coupon"],
             ),
             Button(Const("🆘 Помощь"), id="help", on_click=on_help),
             width=2,

@@ -1,5 +1,16 @@
+import os
+from alembic import context
+from dotenv import load_dotenv
+
+# Загружаем переменные окружения
+load_dotenv()
+
+config = context.config
+
+# Берем URL базы данных из окружения
+config.set_main_option("sqlalchemy.url", os.getenv("DB_URL"))
+
 import asyncio
-import sys
 from logging.config import fileConfig
 from typing import Any
 
@@ -8,6 +19,11 @@ from alembic.script import ScriptDirectory
 from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
+
+import sys
+import os
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src")))
 
 from database.config import get_db_config
 from database.models import *  # noqa: F403

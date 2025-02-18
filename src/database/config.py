@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent  # Поднимаемся на 3 уровня вверх
 
-load_dotenv(BASE_DIR / ".env")
+load_dotenv(str(BASE_DIR / ".env"))
 
 _parse_settings = SettingsConfigDict(
     env_file=str(BASE_DIR / ".env"),

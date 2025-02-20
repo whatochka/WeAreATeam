@@ -6,6 +6,7 @@ from .tasks import TaskModel
 from .users import UserModel
 from .users_to_secrets import UsersToSecretsModel
 from .users_to_tasks import UsersToTasksModel
+from .pre_registred_users import PreRegisteredUserModel
 
 __all__ = (
     "LogsModel",
@@ -16,4 +17,5 @@ __all__ = (
     "UserModel",
     "UsersToSecretsModel",
     "UsersToTasksModel",
+    "PreRegisteredUserModel"
 )

@@ -3,7 +3,7 @@ from aiogram_dialog.widgets.kbd import Button, Group
 from aiogram_dialog.widgets.text import Const, Format
 
 from bot.dialogs.buttons import GoToMenuButton
-from bot.dialogs.filters.roles import IsAdmin, IsStager, IsWithRole
+from bot.dialogs.filters.roles import IsAdmin, IsWithRole, IsOrganizer
 
 from .getters import get_user_info, get_users_count
 from .on_actions import (
@@ -50,7 +50,7 @@ admin_panel_window = Window(
             Const("🧠 Задания"),
             id="tasks",
             on_click=on_go_to_tasks,
-            when=IsStager(),
+            when=IsOrganizer(),
         ),
         width=2,
     ),

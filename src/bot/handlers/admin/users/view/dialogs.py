@@ -6,7 +6,7 @@ from aiogram_dialog.widgets.kbd import Back, Button, Group
 from aiogram_dialog.widgets.text import Const
 
 from bot.dialogs.buttons import GoToAdminPanelButton, GoToMenuButton
-from bot.dialogs.filters.roles import IsAdmin, IsSeller, IsStager
+from bot.dialogs.filters.roles import IsAdmin, IsOrganizer
 from bot.dialogs.on_actions import on_start_update_dialog_data
 
 from ..getters import get_view_user_info
@@ -39,13 +39,13 @@ view_user_window = Window(
             Const("🧺 Корзина"),
             id="cart",
             on_click=on_check_cart,
-            when=IsSeller(),
+            when=IsAdmin(),
         ),
         Button(
             Const("🧠 Задание"),
             id="task",
             on_click=on_view_task,
-            when=IsStager(),
+            when=IsOrganizer(),
         ),
         Button(
             Const("👨‍💼 Выдать роль"),

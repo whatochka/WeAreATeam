@@ -11,11 +11,11 @@ class RolesService:
     async def is_admin(self, user_id: UserId) -> bool:
         return await self.is_enough_rights(user_id, RightsRole.ADMIN)
 
-    async def is_seller(self, user_id: UserId) -> bool:
-        return await self.is_enough_rights(user_id, RightsRole.SELLER)
+    async def is_organizer(self, user_id: UserId) -> bool:
+        return await self.is_enough_rights(user_id, RightsRole.ORGANIZER)
 
-    async def is_stager(self, user_id: UserId) -> bool:
-        return await self.is_enough_rights(user_id, RightsRole.STAGER)
+    async def is_participant(self, user_id: UserId) -> bool:
+        return await self.is_enough_rights(user_id, RightsRole.PARTICIPANT)
 
     async def is_enough_rights(self, user_id: UserId, role: RightsRole | None) -> bool:
         user = await self.users_repo.get_by_id(user_id)

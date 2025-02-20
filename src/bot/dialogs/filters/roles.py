@@ -26,14 +26,14 @@ class IsAdmin(DialogsRoleAccess):
         super().__init__([RightsRole.ADMIN])
 
 
-class IsSeller(DialogsRoleAccess):
+class IsOrganizer(DialogsRoleAccess):
     def __init__(self) -> None:
-        super().__init__([RightsRole.SELLER, RightsRole.ADMIN])
+        super().__init__([RightsRole.ORGANIZER, RightsRole.ADMIN])
 
 
-class IsStager(DialogsRoleAccess):
+class IsParticipant(DialogsRoleAccess):
     def __init__(self) -> None:
-        super().__init__([RightsRole.STAGER, RightsRole.ADMIN])
+        super().__init__([RightsRole.PARTICIPANT, RightsRole.ADMIN])
 
 
 class IsWithRole(DialogsRoleAccess):

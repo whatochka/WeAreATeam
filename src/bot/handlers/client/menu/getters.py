@@ -19,8 +19,10 @@ async def get_user_info(
     **__: Any,
 ) -> dict[str, Any]:
     user: UserModel = dialog_manager.middleware_data["user"]
+
     if dialog_manager.start_data and FORCE_GET_USER_KEY in dialog_manager.start_data:
         user = await users_repo.get_by_id(user.id)
+
     task = await tasks_repo.get_active_task(user.id)
 
     return {

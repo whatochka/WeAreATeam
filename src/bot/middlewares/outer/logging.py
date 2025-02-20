@@ -3,7 +3,6 @@ from collections.abc import Awaitable, Callable
 from typing import Any
 
 from aiogram import BaseMiddleware
-from aiogram.dispatcher.event.bases import REJECTED, UNHANDLED
 from aiogram.types import CallbackQuery, Message, TelegramObject
 
 from core.ids import TgId, UserId
@@ -25,10 +24,10 @@ class LoggingMiddleware(BaseMiddleware):
         )
 
     async def post_callbackquery(
-        self,
-        callback: CallbackQuery,
-        user_id: UserId,
-        is_handled: bool,
+            self,
+            callback: CallbackQuery,
+            user_id: UserId,
+            is_handled: bool,
     ) -> None:
         logger.info(
             'Over=%s callback=%s "%s" [%s]',
@@ -53,10 +52,10 @@ class LoggingMiddleware(BaseMiddleware):
         )
 
     async def post_message(
-        self,
-        message: Message,
-        user_id: UserId,
-        is_handled: bool,
+            self,
+            message: Message,
+            user_id: UserId,
+            is_handled: bool,
     ) -> None:
         if message.photo:
             log = 'Over=%s photo=%d "%s" [%s]'
@@ -73,19 +72,14 @@ class LoggingMiddleware(BaseMiddleware):
         )
 
     async def __call__(
-        self,
-        handler: Callable[[TelegramObject, dict[str, Any]], Awaitable[Any]],
-        event: TelegramObject,
-        data: dict[str, Any],
+            self,
+            handler: Callable[[TelegramObject, dict[str, Any]], Awaitable[Any]],
+            event: TelegramObject,
+            data: dict[str, Any],
     ) -> Any:
-        user_id: UserId = data["user_id"]
-        class_name = event.__class__.__name__.lower()
-
-        await getattr(self, f"pre_{class_name}")(event, user_id)
+        user_id = data.get("user_id")
+        if user_id is not None:
+            logger.info(f"Event received from user_id={user_id}")
 
         result = await handler(event, data)
-        is_handled = result not in (UNHANDLED, REJECTED)
-
-        await getattr(self, f"post_{class_name}")(event, user_id, is_handled)
-
         return result

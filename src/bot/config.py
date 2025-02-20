@@ -4,9 +4,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 from pathlib import Path
 from dotenv import load_dotenv
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent  # Поднимаемся на 3 уровня вверх
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-# Явная загрузка .env (ТОЛЬКО для локального запуска)
 load_dotenv(BASE_DIR / ".env")
 
 parse_settings = SettingsConfigDict(

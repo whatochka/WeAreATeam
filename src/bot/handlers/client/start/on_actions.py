@@ -1,62 +1,52 @@
-import re
-
-from aiogram.types import CallbackQuery, Message
+from aiogram.types import Message
 from aiogram_dialog import DialogManager, ShowMode
 from aiogram_dialog.widgets.input import MessageInput
-from aiogram_dialog.widgets.kbd import Button
 from dishka import FromDishka
 from dishka.integrations.aiogram_dialog import inject
 
-from bot.dialogs.flags import FORCE_GET_USER_KEY
-from core.enums import RightsRole
-from core.ids import UserId
+from database.models import UserModel
 from database.repos.users import UsersRepo
-
 from ..menu.states import MenuStates
-from .states import StartStates
-
-
-async def name_handler(
-    message: Message,
-    _: MessageInput,
-    dialog_manager: DialogManager,
-) -> None:
-    dialog_manager.show_mode = ShowMode.DELETE_AND_SEND
-
-    full_name = message.text.strip()[:64]
-    if not re.match(r"^[А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+$", full_name):
-        dialog_manager.dialog_data["retry"] = "format"
-        return
-
-    dialog_manager.dialog_data["full_name"] = full_name
-    await dialog_manager.next()
 
 
 @inject
-async def register_confirm(
-    callback: CallbackQuery,
-    _: Button,
+async def auth_number_password_handler(
+    message: Message,
+    _: MessageInput,
     dialog_manager: DialogManager,
     users_repo: FromDishka[UsersRepo],
 ) -> None:
-    tg_id = callback.from_user.id
-    full_name = dialog_manager.dialog_data["full_name"]
-    bot_owner_ids: list[UserId] = dialog_manager.middleware_data["owner_id"]
-    user_id: UserId = dialog_manager.middleware_data["user_id"]
+    text = message.text.strip()
+    if " " not in text:
+        await message.delete()
+        await message.answer("❌ Ошибка: номер или пароль указаны неверно.")
+        return
 
-    role = RightsRole.ADMIN if tg_id in bot_owner_ids else None
-    await users_repo.update(user_id, full_name, role)
+    number, password = text.split(" ", 1)
+    registered_user = await users_repo.get_pre_registered_user(number)
 
-    await dialog_manager.start(
-        state=MenuStates.menu,
-        data={FORCE_GET_USER_KEY: None},
-        show_mode=ShowMode.DELETE_AND_SEND,
-    )
+    if not registered_user or not UserModel.verify_password(password, registered_user.password_hash):
+        await message.delete()
+        await message.answer("❌ Ошибка: номер или пароль указаны неверно.")
+        return
 
+    existing_user = await users_repo.get_by_number(number)
+    if existing_user:
+        if existing_user.tg_id != message.from_user.id:
+            await message.delete()
+            await message.answer("❗ Этот пользователь уже авторизован с другого аккаунта.")
+            return
+        else:
+            await users_repo.update_user_from_pre_registered(existing_user, registered_user, message.from_user.username)
+            user = existing_user
+    else:
+        user = await users_repo.create_user_from_pre_registered(
+            registered_user,
+            message.from_user.id,
+            message.from_user.username
+        )
 
-async def register_disconfirm(
-    _: CallbackQuery,
-    __: Button,
-    dialog_manager: DialogManager,
-) -> None:
-    await dialog_manager.start(state=StartStates.name, data={"retry": True})
+    dialog_manager.middleware_data["user"] = user
+
+    await message.delete()
+    await dialog_manager.start(state=MenuStates.menu, data={}, show_mode=ShowMode.DELETE_AND_SEND)

@@ -13,8 +13,11 @@ class AiogramRoleAccess(Filter):
     async def __call__(
         self,
         _: Any,
-        user: UserModel,
+        user: UserModel | None,
     ) -> bool:
+        # ✅ Добавил проверку на None и роль
+        if user is None:
+            return False
         return user.role in self.roles
 
 
@@ -23,14 +26,14 @@ class IsAdmin(AiogramRoleAccess):
         super().__init__([RightsRole.ADMIN])
 
 
-class IsSeller(AiogramRoleAccess):
+class IsOrganizer(AiogramRoleAccess):
     def __init__(self) -> None:
-        super().__init__([RightsRole.SELLER, RightsRole.ADMIN])
+        super().__init__([RightsRole.ORGANIZER, RightsRole.ADMIN])
 
 
-class IsStager(AiogramRoleAccess):
+class IsParticipant(AiogramRoleAccess):
     def __init__(self) -> None:
-        super().__init__([RightsRole.STAGER, RightsRole.ADMIN])
+        super().__init__([RightsRole.PARTICIPANT, RightsRole.ADMIN])
 
 
 class IsWithRole(AiogramRoleAccess):

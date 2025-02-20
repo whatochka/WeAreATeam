@@ -28,7 +28,7 @@ class PurchasesService:
         product_ids: list[ProductId],
         master_id: UserId,
     ) -> None:
-        await self.roles_service.is_seller(master_id)
+        await self.roles_service.is_organizer(master_id)
 
         user = await self.users_repo.get_by_id(slave_id)
         if user is None:

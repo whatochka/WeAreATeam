@@ -96,7 +96,7 @@ class UsersRepo(BaseAlchemyRepo):
         user.tg_username = username
         user.name = registered_user.name
         user.phone = registered_user.phone
-        user.team_number = registered_user.team_number
+        user.team_name = registered_user.team_name
         user.is_captain = registered_user.is_captain
         user.role = registered_user.role if registered_user.role else "user"
         user.is_active = True

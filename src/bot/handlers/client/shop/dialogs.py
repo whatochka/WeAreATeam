@@ -23,11 +23,11 @@ view_available_products_window = Window(
         when=F["total_stock"],
     ),
     Const("Товаров в наличии нет", when=~F["total_stock"]),
-    Format("Баланс: {middleware_data[user].balance} Пятаков\n", when=F["total_stock"]),
+    Format("Баланс: {middleware_data[user].balance} червонцев\n", when=F["total_stock"]),
     Const(CATALOG_URL_TEXT, when=F["total_stock"]),
     ScrollingGroup(
         Select(
-            Format("{item.name} — {item.price} Пятаков"),
+            Format("{item.name} — {item.price} червонцев"),
             id="products_select",
             item_id_getter=lambda item: item.id,
             items="products",
@@ -47,7 +47,7 @@ view_available_products_window = Window(
 
 view_one_product_window = Window(
     Format("<b>{product.name}</b>\n"),
-    Format("Цена: {product.price} Пятаков"),
+    Format("Цена: {product.price} червонцев"),
     Format("В наличии {product.stock} шт.\n"),
     Format("{product.description}"),
     Button(Const("💵 Купить"), id="buy", on_click=on_buy_product, when=F["can_buy"]),

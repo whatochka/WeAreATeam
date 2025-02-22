@@ -30,4 +30,6 @@ async def get_user_info(
         "balance": user.balance,
         "role": translate_role(user.role),
         "task": task,
+        "number": user.number,
+        "team_name": user.team_name
     }

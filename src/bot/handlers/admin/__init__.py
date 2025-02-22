@@ -1,6 +1,6 @@
 from aiogram import Router
 
-from bot.filters.roles import IsAdmin, IsWithRole
+from bot.filters.roles import IsAdmin, IsWithRole, IsOrganizer, IsCaptain
 
 from .broadcast.dialogs import broadcast_dialog
 from .logs.router import router as logs_router
@@ -73,6 +73,24 @@ def include_admin_dialogs(root_router: Router) -> None:
         edit_product_dialog,
     )
 
+    seller_router = Router(name=__file__)
+    for observer in seller_router.observers.values():
+        observer.filter(IsOrganizer())
+    seller_router.include_router(
+        user_cart_dialog,
+    )
+
+    stager_router = Router(name=__file__)
+    for observer in stager_router.observers.values():
+        observer.filter(IsOrganizer())
+    stager_router.include_routers(
+        view_tasks_dialog,
+        create_task_dialog,
+        view_user_task_dialog,
+        cancel_task_dialog,
+        confirm_task_dialog,
+    )
+
     with_role_router = Router(name=__file__)
     for observer in with_role_router.observers.values():
         observer.filter(IsWithRole())
@@ -80,6 +98,8 @@ def include_admin_dialogs(root_router: Router) -> None:
         admin_panel_dialog,
         view_user_dialog,
         admin_router,
+        seller_router,
+        stager_router,
     )
 
     root_router.include_router(with_role_router)

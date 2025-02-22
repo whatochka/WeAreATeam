@@ -15,7 +15,7 @@ class PreRegisteredUserModel(BaseAlchemyModel):
     name: Mapped[str] = mapped_column(String(64), nullable=False)
     tg_username: Mapped[str | None] = mapped_column(String(32), unique=True, nullable=True)
     phone: Mapped[str | None] = mapped_column(String(16), nullable=True)
-    team_number: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    team_name: Mapped[str | None] = mapped_column(String(32), nullable=True)
     is_captain: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     role: Mapped[str] = mapped_column(String(16), nullable=False)
 

@@ -35,7 +35,7 @@ async def check_secret_handler(
     except (SecretNotFound, SecretRewardAlreadyClaimed, ActivationLimitReached):
         return
 
-    await message.answer(f"🕵 Секрет найден! Начислено {reward} Пятаков 💰")
+    await message.answer(f"🕵 Секрет найден! Начислено {reward} червонцев 💰")
     await dialog_manager.start(
         state=MenuStates.menu,
         data={FORCE_GET_USER_KEY: None},

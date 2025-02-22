@@ -9,10 +9,11 @@ from core.ids import UserId
 from .view.states import ViewUserStates
 
 UserAdminInfoText = Multi(
-    Format("ID: <code>{view_user.id}</code>"),
-    Format("<b>{view_user.name}</b> - {role}"),
-    Format('<a href="tg://openmessage?user_id={view_user.tg_id}">тык</a>'),
-    Format('<a href="tg://user?id={view_user.tg_id}">тык</a>'),
+    Format("Номер: <code>{view_user.number}</code>"),
+    Format("ФИО: <b>{view_user.name}</b> - {role}"),
+    Format("Номер: <b>{view_user.phone}</b>"),
+    Format("ТГ: <b>@{view_user.tg_username}</b>"),
+    Format("Команда: <b>{view_user.team_name}</b>"),
     Format("ФИО - {fio}", when=F["fio"]),
     Format("Группа - {group}", when=F["group"]),
     Const(" "),

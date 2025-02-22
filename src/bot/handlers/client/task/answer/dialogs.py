@@ -25,7 +25,7 @@ wait_answer_window = Window(
 
 ok_answer_window = Window(
     Const("🎉 Верно!"),
-    Format("Ты получил {start_data[reward]} Пятаков за задание «{start_data[title]}»"),
+    Format("Ты получил {start_data[reward]} червонцев за задание «{start_data[title]}»"),
     GoToMenuButton(),
     state=AnswerTaskStates.ok,
 )

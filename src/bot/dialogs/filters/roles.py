@@ -31,9 +31,9 @@ class IsOrganizer(DialogsRoleAccess):
         super().__init__([RightsRole.ORGANIZER, RightsRole.ADMIN])
 
 
-class IsParticipant(DialogsRoleAccess):
+class IsCaptain(DialogsRoleAccess):
     def __init__(self) -> None:
-        super().__init__([RightsRole.PARTICIPANT, RightsRole.ADMIN])
+        super().__init__([RightsRole.CAPTAIN])
 
 
 class IsWithRole(DialogsRoleAccess):

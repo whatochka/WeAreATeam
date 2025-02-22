@@ -5,7 +5,7 @@ from aiogram_dialog.widgets.kbd import Button
 from dishka import FromDishka
 from dishka.integrations.aiogram_dialog import inject
 
-from core.ids import TgId, UserId
+from core.ids import TgId, UserId, Number
 from core.services.qrcode_saver import QRCodeSaver
 from database.repos.users import UsersRepo
 
@@ -21,17 +21,17 @@ async def id_input_handler(
     dialog_manager: DialogManager,
     users_repo: FromDishka[UsersRepo],
 ) -> None:
-    user_id = UserId(int(message.text))
+    user_number = Number(message.text)
 
     dialog_manager.show_mode = ShowMode.DELETE_AND_SEND
 
-    user = await users_repo.get_by_id(user_id)
+    user = await users_repo.get_by_number(str(user_number))
     if user is None:
-        text = f"Пользователя с ID {user_id} не существует :("
+        text = f"Пользователя с ID {user_number} не существует :("
         await message.answer(text=text)
         return
 
-    dialog_manager.dialog_data["view_user_id"] = user.id
+    dialog_manager.dialog_data["view_user_number"] = user.number
     await dialog_manager.next()
 
 

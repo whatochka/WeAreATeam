@@ -26,7 +26,7 @@ async def on_confirm_task(
         master_id,
     )
 
-    text = f"💵 Задание «{title}» завершено! Начислено {reward} Пятаков"
+    text = f"💵 Задание «{title}» завершено! Начислено {reward} червонцев"
     await broadcaster.one_notify(text, view_user_id)
 
     await dialog_manager.start(ViewUserStates.one, data={"view_user_id": view_user_id})

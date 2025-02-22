@@ -24,9 +24,9 @@ class UserModel(CreatedAtMixin, UpdatedAtMixin, BaseAlchemyModel):
     tg_username: Mapped[str | None] = mapped_column(String(32), unique=True, nullable=True)
     name: Mapped[str] = mapped_column(String(64), nullable=True)
     phone: Mapped[str | None] = mapped_column(String(16), nullable=True)
-    team_number: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    team_name: Mapped[str | None] = mapped_column(String(32), nullable=True)
     is_captain: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
-    role: Mapped[str] = mapped_column(String(16), nullable=False, default="user")
+    role: Mapped[str] = mapped_column(String(16), nullable=False)
     balance: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     qrcode_image_id: Mapped[str | None] = mapped_column(String(128), nullable=True, unique=True)
@@ -43,7 +43,7 @@ class UserModel(CreatedAtMixin, UpdatedAtMixin, BaseAlchemyModel):
             tg_username=tg_username,
             name=registered_user.name,
             phone=registered_user.phone,
-            team_number=registered_user.team_number,
+            team_name=registered_user.team_name,
             is_captain=registered_user.is_captain,
             role=registered_user.role if registered_user.role else "user",
             balance=0,

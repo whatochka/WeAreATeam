@@ -1,12 +1,5 @@
 import sys
 import os
-
-BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
-
-sys.path.insert(0, BASE_DIR)
-
-import sys
-import os
 import asyncio
 import csv
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -29,14 +22,15 @@ async def import_users_from_csv(csv_file: str, session: AsyncSession):
 
         for row in reader:
             number = row["number"]
-            role = (
-                "admin" if number == "000"
-                else "organizer" if number.startswith("0")
-                else "participant"
-            )
+            role = row.get("role")
+            if not role:
+                role = (
+                    "admin" if number == "000"
+                    else "organizer" if number.startswith("0")
+                    else "None"
+                )
 
-            team_number = int(number[0]) if role == "participant" else None
-            is_captain = row.get("is_captain", "false").lower() == "true"
+            is_captain = row.get("capitan", "false").strip().lower() == "true"
 
             users.append(
                 PreRegisteredUserModel(
@@ -45,7 +39,7 @@ async def import_users_from_csv(csv_file: str, session: AsyncSession):
                     name=row["name"],
                     tg_username=row["tg_username"] if row["tg_username"] else None,
                     phone=row["phone"] if row["phone"] else None,
-                    team_number=team_number,
+                    team_name=row["team_name"],
                     is_captain=is_captain,
                     role=role,
                 )

@@ -25,12 +25,12 @@ menu_dialog = Dialog(
         Group(
             Button(Const("🛍️ Магазин"), id="shop", on_click=on_shop),
             Button(Const("🧺 Корзина"), id="cart", on_click=on_cart),
-            Button(
-                Const("💸 Перевод"),
-                id="transfer",
-                on_click=on_transfer_funds,
-                when=F["balance"] > 0,
-            ),
+            # Button(
+            #     Const("💸 Перевод"),
+            #     id="transfer",
+            #     on_click=on_transfer_funds,
+            #     when=F["balance"] > 0,
+            # ),
             Button(Const("🆘 Помощь"), id="help", on_click=on_help),
             width=2,
         ),

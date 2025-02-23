@@ -4,7 +4,7 @@ from aiogram_dialog.widgets.kbd import Button, Group
 from aiogram_dialog.widgets.text import Const, Format
 
 from bot.dialogs.buttons import GoToAdminPanelButton, GoToTaskButton
-from bot.dialogs.filters.roles import IsWithRole, IsOrganizer
+from bot.dialogs.filters.roles import IsWithRole, IsOrganizer, IsCaptain
 
 from .getters import get_user_info
 from .on_actions import (
@@ -12,6 +12,8 @@ from .on_actions import (
     on_help,
     on_shop,
     on_transfer_funds,
+    on_team_shop,
+    on_team_cart,
 )
 from .states import MenuStates
 
@@ -24,14 +26,16 @@ menu_dialog = Dialog(
         Format("Ты - <u>{role}</u>", when=IsWithRole()),
         Group(
             Button(Const("🛍️ Магазин"), id="shop", on_click=on_shop),
+            Button(Const("🙌 Командный магазин"), id="team_shop", on_click=on_team_shop, when=IsWithRole()),
             Button(Const("🧺 Корзина"), id="cart", on_click=on_cart),
+            Button(Const("📦 Командная корзина"), id="team_cart", on_click=on_team_cart, when=IsWithRole()),
             # Button(
             #     Const("💸 Перевод"),
             #     id="transfer",
             #     on_click=on_transfer_funds,
             #     when=F["balance"] > 0,
             # ),
-            Button(Const("🆘 Помощь"), id="help", on_click=on_help),
+            # Button(Const("🆘 Помощь"), id="help", on_click=on_help),
             width=2,
         ),
         GoToAdminPanelButton(when=IsOrganizer()),

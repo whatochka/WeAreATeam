@@ -5,6 +5,8 @@ from .block_bot import router as block_bot_router
 from .cancel import router as cancel_router
 from .cart.dialogs import cart_dialog
 from .cart.router import router as purchases_router
+from .team_cart.dialogs import team_cart_dialog
+from .team_cart.router import router as team_purchases_router
 from .help.dialogs import help_dialog
 from .help.router import router as help_router
 from .menu.dialogs import menu_dialog
@@ -13,6 +15,8 @@ from .qrcode.router import router as qrcodes_router
 from .secret.router import router as secret_router
 from .shop.dialogs import shop_dialog
 from .shop.router import router as products_router
+from .team_shop.dialogs import team_shop_dialog
+from .team_shop.router import router as team_products_router
 from .start.dialogs import start_dialog
 from .start.router import router as start_router
 from .task.dialogs import start_task_dialog, task_answer_dialog, view_task_dialog
@@ -45,6 +49,8 @@ def include_client_routers(root_router: Router) -> None:
         qrcodes_router,
         purchases_router,
         transfer_funds_router,
+        team_products_router,
+        team_purchases_router,
     )
 
     root_router.include_routers(registered_clients_router)
@@ -65,4 +71,6 @@ def include_client_dialogs(root_router: Router) -> None:
         view_task_dialog,
         start_task_dialog,
         task_answer_dialog,
+        team_shop_dialog,
+        team_cart_dialog,
     )

@@ -10,6 +10,7 @@ from .on_actions import (
     on_go_to_broadcast,
     on_go_to_secrets,
     on_go_to_shop,
+    on_go_to_team_shop,
     on_go_to_tasks,
     on_go_to_view_users,
 )
@@ -38,6 +39,12 @@ admin_panel_window = Window(
             Const("🛍️ Товары"),
             id="products",
             on_click=on_go_to_shop,
+            when=IsAdmin(),
+        ),
+        Button(
+            Const("🙌 Командные товары"),
+            id="products_team",
+            on_click=on_go_to_team_shop,
             when=IsAdmin(),
         ),
         Button(

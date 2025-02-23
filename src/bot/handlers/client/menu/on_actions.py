@@ -3,47 +3,65 @@ from aiogram_dialog import DialogManager
 from aiogram_dialog.widgets.kbd import Button
 
 from bot.handlers.client.cart.states import CartStates
+from bot.handlers.client.team_cart.states import TeamCartStates
 from bot.handlers.client.help.states import HelpStates
 from bot.handlers.client.shop.states import ShopStates
+from bot.handlers.client.team_shop.states import TeamShopStates
 from bot.handlers.client.task.view.states import ViewTaskStates
 from bot.handlers.client.transfer_funds.states import TransferFundsStates
 
 
 async def on_shop(
-    _: CallbackQuery,
-    __: Button,
-    dialog_manager: DialogManager,
+        _: CallbackQuery,
+        __: Button,
+        dialog_manager: DialogManager,
 ) -> None:
     await dialog_manager.start(state=ShopStates.list)
 
 
+async def on_team_shop(
+        _: CallbackQuery,
+        __: Button,
+        dialog_manager: DialogManager,
+) -> None:
+    await dialog_manager.start(state=TeamShopStates.list)
+
+
 async def on_cart(
-    _: CallbackQuery,
-    __: Button,
-    dialog_manager: DialogManager,
+        _: CallbackQuery,
+        __: Button,
+        dialog_manager: DialogManager,
 ) -> None:
     await dialog_manager.start(state=CartStates.view)
 
 
+async def on_team_cart(
+        _: CallbackQuery,
+        __: Button,
+        dialog_manager: DialogManager,
+) -> None:
+    await dialog_manager.start(state=TeamCartStates.view)
+
+
 async def on_transfer_funds(
-    _: CallbackQuery,
-    __: Button,
-    dialog_manager: DialogManager,
+        _: CallbackQuery,
+        __: Button,
+        dialog_manager: DialogManager,
 ) -> None:
     await dialog_manager.start(state=TransferFundsStates.id)
 
 
 async def on_help(
-    _: CallbackQuery,
-    __: Button,
-    dialog_manager: DialogManager,
+        _: CallbackQuery,
+        __: Button,
+        dialog_manager: DialogManager,
 ) -> None:
     await dialog_manager.start(state=HelpStates.help)
 
 
 async def on_task(
-    _: CallbackQuery,
-    __: Button,
-    dialog_manager: DialogManager,
+        _: CallbackQuery,
+        __: Button,
+        dialog_manager: DialogManager,
 ) -> None:
     await dialog_manager.start(state=ViewTaskStates.task)

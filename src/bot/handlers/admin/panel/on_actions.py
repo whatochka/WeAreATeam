@@ -5,45 +5,54 @@ from aiogram_dialog.widgets.kbd import Button
 from ..broadcast.states import BroadcastStates
 from ..secrets.view.states import ViewSecretsStates
 from ..shop.view.states import ViewProductsStates
+from ..team_shop.view.states import ViewTeamProductsStates
 from ..tasks.view.states import ViewTasksStates
 from ..users.view.states import ViewUserStates
 
 
 async def on_go_to_broadcast(
-    _: CallbackQuery,
-    __: Button,
-    dialog_manager: DialogManager,
+        _: CallbackQuery,
+        __: Button,
+        dialog_manager: DialogManager,
 ) -> None:
     await dialog_manager.start(state=BroadcastStates.wait)
 
 
 async def on_go_to_secrets(
-    _: CallbackQuery,
-    __: Button,
-    dialog_manager: DialogManager,
+        _: CallbackQuery,
+        __: Button,
+        dialog_manager: DialogManager,
 ) -> None:
     await dialog_manager.start(state=ViewSecretsStates.list)
 
 
 async def on_go_to_view_users(
-    _: CallbackQuery,
-    __: Button,
-    dialog_manager: DialogManager,
+        _: CallbackQuery,
+        __: Button,
+        dialog_manager: DialogManager,
 ) -> None:
     await dialog_manager.start(state=ViewUserStates.id)
 
 
 async def on_go_to_tasks(
-    _: CallbackQuery,
-    __: Button,
-    dialog_manager: DialogManager,
+        _: CallbackQuery,
+        __: Button,
+        dialog_manager: DialogManager,
 ) -> None:
     await dialog_manager.start(state=ViewTasksStates.list)
 
 
 async def on_go_to_shop(
-    _: CallbackQuery,
-    __: Button,
-    dialog_manager: DialogManager,
+        _: CallbackQuery,
+        __: Button,
+        dialog_manager: DialogManager,
 ) -> None:
     await dialog_manager.start(state=ViewProductsStates.list)
+
+
+async def on_go_to_team_shop(
+        _: CallbackQuery,
+        __: Button,
+        dialog_manager: DialogManager,
+) -> None:
+    await dialog_manager.start(state=ViewTeamProductsStates.list)

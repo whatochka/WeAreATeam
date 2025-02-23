@@ -1,0 +1,100 @@
+from aiogram_dialog import Dialog, Window
+from aiogram_dialog.widgets.kbd import Back, Button, Next, Row, ScrollingGroup, Select
+from aiogram_dialog.widgets.text import Const, Format
+
+from bot.dialogs.buttons import GoToAdminPanelButton, GoToMenuButton
+from bot.dialogs.on_actions import on_start_update_dialog_data
+
+from ..buttons import GoToProductsButton
+from ..getters import get_all_products, get_one_product
+from .on_actions import (
+    on_confirm_delete_product,
+    on_create_product,
+    on_edit_price,
+    on_edit_stock,
+    on_product_selected,
+    on_view_qrcode,
+)
+from .states import ViewTeamProductsStates
+
+products_list_window = Window(
+    Const("🙌 Все командные товары"),
+    ScrollingGroup(
+        Select(
+            Format("{item.name} | {item.price}"),
+            id="products_select",
+            items="products",
+            on_click=on_product_selected,
+            item_id_getter=lambda item: item.id,
+            type_factory=int,
+        ),
+        width=1,
+        height=10,
+        hide_on_single_page=True,
+        id="products_group",
+    ),
+    Button(
+        Const("✏️ Добавить командный товар"),
+        id="create_product",
+        on_click=on_create_product,
+    ),
+    GoToAdminPanelButton(),
+    GoToMenuButton(),
+    getter=get_all_products,
+    state=ViewTeamProductsStates.list,
+)
+
+view_one_product_window = Window(
+    Format("ID: {product.id}"),
+    Format("Название:\n{product.name}\n"),
+    Format("Описание:\n{product.description}\n"),
+    Format("Цена: {product.price} командных червонцев"),
+    Format("В наличии: {product.stock}\n"),
+    Button(
+        Const("🖼️ Куркод товара"),
+        id="qrcode",
+        on_click=on_view_qrcode,
+    ),
+    Row(
+        Button(
+            Const("🏷️ Изменить цену"),
+            id="price",
+            on_click=on_edit_price,
+        ),
+        Button(
+            Const("📦 Изменить запас"),
+            id="stock",
+            on_click=on_edit_stock,
+        ),
+    ),
+    Button(
+        Const("🗑️ Удалить"),
+        id="delete",
+        on_click=Next(),
+    ),
+    Back(Const("⏪ Товары")),
+    GoToAdminPanelButton(),
+    getter=get_one_product,
+    state=ViewTeamProductsStates.one,
+)
+
+confirm_delete_product_window = Window(
+    Format("❓ Ты уверен, что хочешь удалить товар ID={product.id}? "),
+    Button(
+        Const("✅ Подтвердить"),
+        id="confirm_delete",
+        on_click=on_confirm_delete_product,
+    ),
+    Back(Const("⏪ Отмена")),
+    GoToProductsButton(),
+    GoToAdminPanelButton(),
+    getter=get_one_product,
+    state=ViewTeamProductsStates.confirm,
+)
+
+view_team_products_dialog = Dialog(
+    products_list_window,
+    view_one_product_window,
+    confirm_delete_product_window,
+    on_start=on_start_update_dialog_data,
+)

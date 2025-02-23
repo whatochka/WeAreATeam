@@ -3,7 +3,9 @@ from dishka import Provider, Scope, provide
 
 from core.services.broadcast import Broadcaster
 from core.services.products import ProductsService
+from core.services.team_products import TeamProductsService
 from core.services.purchases import PurchasesService
+from core.services.team_purchases import TeamPurchasesService
 from core.services.qrcode_saver import QRCodeSaver
 from core.services.qrcodes import QRCodeService
 from core.services.roles import RolesService
@@ -24,8 +26,10 @@ class ServicesProvider(Provider):
     qrcode_saver = provide(QRCodeSaver)
     broadcaster = provide(Broadcaster)
     products_service = provide(ProductsService)
+    team_products_service = provide(TeamProductsService)
     users_service = provide(UsersService)
     secrets_service = provide(SecretsService)
     tasks_service = provide(TasksService)
     purchases_service = provide(PurchasesService)
+    team_purchases_service = provide(TeamPurchasesService)
     roles_service = provide(RolesService)

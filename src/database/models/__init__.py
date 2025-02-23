@@ -1,6 +1,8 @@
 from .logs import LogsModel
 from .products import ProductModel
+from .team_products import TeamProductModel
 from .purchases import PurchaseModel
+from .team_purchases import TeamPurchasesModel
 from .secret import SecretModel
 from .tasks import TaskModel
 from .users import UserModel
@@ -17,5 +19,7 @@ __all__ = (
     "UserModel",
     "UsersToSecretsModel",
     "UsersToTasksModel",
-    "PreRegisteredUserModel"
+    "PreRegisteredUserModel",
+    "TeamProductModel",
+    "TeamPurchasesModel",
 )

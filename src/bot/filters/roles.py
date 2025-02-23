@@ -15,7 +15,6 @@ class AiogramRoleAccess(Filter):
         _: Any,
         user: UserModel | None,
     ) -> bool:
-        # ✅ Добавил проверку на None и роль
         if user is None:
             return False
         return user.role in self.roles

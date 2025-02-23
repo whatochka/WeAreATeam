@@ -18,6 +18,14 @@ from .shop.dialogs import (
     view_products_dialog,
 )
 from .shop.router import router as products_routes
+
+from .team_shop.dialogs import (
+    create_team_product_dialog,
+    edit_team_product_dialog,
+    view_team_products_dialog,
+)
+from .team_shop.router import router as team_products_routes
+
 from .tasks.dialogs import create_task_dialog, view_tasks_dialog
 from .tasks.router import router as tasks_router
 from .users.cart.dialogs import user_cart_dialog
@@ -39,6 +47,7 @@ def include_admin_routers(root_router: Router) -> None:
         logs_router,
         money_router,
         products_routes,
+        team_products_routes,
     )
 
     # seller_router = Router(name=__file__)
@@ -71,6 +80,9 @@ def include_admin_dialogs(root_router: Router) -> None:
         view_products_dialog,
         create_product_dialog,
         edit_product_dialog,
+        view_team_products_dialog,
+        create_team_product_dialog,
+        edit_team_product_dialog,
     )
 
     seller_router = Router(name=__file__)

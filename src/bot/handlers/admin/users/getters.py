@@ -15,8 +15,8 @@ async def get_view_user_info(
     users_repo: FromDishka[UsersRepo],
     **__: Any,
 ) -> dict[str, Any]:
-    view_user_number: Number = dialog_manager.dialog_data["view_user_number"]
-    user = await users_repo.get_by_number(view_user_number)
+    view_user_id: UserId = dialog_manager.dialog_data["view_user_id"]
+    user = await users_repo.get_by_id(view_user_id)
     role = translate_role(user.role, "Пользователь")
     return {
         "view_user": user,

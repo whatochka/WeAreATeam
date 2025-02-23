@@ -31,7 +31,7 @@ async def id_input_handler(
         await message.answer(text=text)
         return
 
-    dialog_manager.dialog_data["view_user_number"] = user.number
+    dialog_manager.dialog_data["view_user_id"] = user.id
     await dialog_manager.next()
 
 

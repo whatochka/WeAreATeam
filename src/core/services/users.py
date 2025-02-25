@@ -5,24 +5,15 @@ from core.exceptions import (
     NotEnoughMoney,
     RoleNotFound,
     UserNotFound,
-    UserNumberNotFound,
 )
-from core.ids import UserId, Number
+from core.ids import UserId
 from core.services.roles import RolesService
 from database.repos.logs import LogsRepo
 from database.repos.users import UsersRepo
 from database.models.users import Medal
-from database.models.users import UserModel
 
 
 class UsersService:
-    MEDAL_DISCOUNTS = {
-        Medal.NONE: 0,
-        Medal.BRONZE: 10,
-        Medal.SILVER: 15,
-        Medal.GOLD: 20,
-    }
-
     def __init__(
         self,
         users_repo: UsersRepo,
@@ -199,9 +190,21 @@ class UsersService:
 
         await self.logs_repo.log_action(slave_id, f"New role {role=} by {master_id=}")
 
-    async def assign_medal(self, number: str, medal: str) -> None:
-        medal_enum = Medal[medal.upper()]
-        await self.users_repo.assign_medal(number, medal_enum)
+    async def update_medal(
+            self,
+            slave_id: UserId,
+            master_id: UserId,
+            medal: Medal) -> None:
+        user = await self.users_repo.get_by_id(slave_id)
 
-    async def get_discount(self, user: UserModel) -> int:
-        return self.MEDAL_DISCOUNTS[user.medal]
+        if user is None:
+            raise UserNotFound(slave_id)
+
+        await self.roles_service.is_admin(master_id)
+
+        await self.users_repo.set_medal(slave_id, medal)
+
+        await self.logs_repo.log_action(
+            slave_id,
+            f"Update medal to {medal.name} by {master_id}"
+        )

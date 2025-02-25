@@ -7,4 +7,12 @@ class RightsRole(StrEnum, ValuesEnum):
     CAPTAIN = "captain"
 
 
+class Medal(StrEnum, ValuesEnum):
+    NONE = "NONE"
+    BRONZE = "BRONZE"
+    SILVER = "SILVER"
+    GOLD = "GOLD"
+
+
 ALL_ROLES = (*RightsRole.values(), None)
+ALL_MEDALS = (*Medal.values(), None)

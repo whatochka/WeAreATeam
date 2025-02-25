@@ -1,20 +1,13 @@
 from sqlalchemy import BigInteger, Boolean, Identity, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
 from core.ids import TgId, UserId
+from core.enums import Medal
 from database.models._mixins import CreatedAtMixin, UpdatedAtMixin
 from database.models.base import BaseAlchemyModel
 from passlib.context import CryptContext
 from database.models.pre_registred_users import PreRegisteredUserModel
-from enum import Enum as PyEnum
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-
-class Medal(PyEnum):
-    NONE = "none"
-    BRONZE = "bronze"
-    SILVER = "silver"
-    GOLD = "gold"
 
 
 class UserModel(CreatedAtMixin, UpdatedAtMixin, BaseAlchemyModel):

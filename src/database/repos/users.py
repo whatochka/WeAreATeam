@@ -135,7 +135,12 @@ class UsersRepo(BaseAlchemyRepo):
         query = select(UserModel).where(UserModel.number == number)
         return await self.session.scalar(query)
 
-    async def assign_medal(self, number: str, medal: Medal) -> None:
-        stmt = update(UserModel).where(UserModel.number == number).values(medal=medal)
-        await self.session.execute(stmt)
-        await self.session.commit()
+    async def set_medal(self, user_id: UserId, medal: Medal) -> None:
+        query = (
+            update(UserModel)
+            .where(UserModel.id == user_id)
+            .values(medal=medal)
+        )
+
+        await self.session.execute(query)
+        await self.session.flush()

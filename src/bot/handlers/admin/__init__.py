@@ -42,7 +42,7 @@ from .users.task.dialogs import (
 )
 from .users.view.dialogs import view_user_dialog
 
-from ..admin.medal.router import router as medal_router
+from .medal.router import router as medal_router
 
 
 def include_admin_routers(root_router: Router) -> None:

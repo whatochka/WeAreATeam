@@ -5,6 +5,7 @@ from aiogram_dialog.widgets.text import Const, Format
 
 from bot.dialogs.buttons import GoToAdminPanelButton, GoToTaskButton
 from bot.dialogs.filters.roles import IsWithRole, IsOrganizer, IsCaptain
+from database.models.users import Medal
 
 from .getters import get_user_info
 from .on_actions import (
@@ -23,6 +24,8 @@ menu_dialog = Dialog(
         Format("Твой номер: <code>{number}</code>"),
         Format("Команда: <b>{team_name}</b>"),
         Format("Баланс: {balance} <b>червонцев</b>\n"),
+        Format("Медаль: {medal}\n", when=F["medal"] != Medal.NONE),
+        Format("Командный баланс: {team_balance} <b>червонцев</b>\n", when=IsWithRole()),
         Format("Ты - <u>{role}</u>", when=IsWithRole()),
         Group(
             Button(Const("🛍️ Магазин"), id="shop", on_click=on_shop),

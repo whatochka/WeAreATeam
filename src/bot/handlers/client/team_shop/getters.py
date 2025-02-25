@@ -43,4 +43,4 @@ async def get_can_buy(
     user: UserModel = dialog_manager.middleware_data["user"]
     product_id: ProductId = dialog_manager.dialog_data["product_id"]
     product = await products_repo.get_by_id(product_id)
-    return {"can_buy": user.balance >= product.price and product.stock > 0}
+    return {"can_buy": user.team_balance >= product.price and product.stock > 0}

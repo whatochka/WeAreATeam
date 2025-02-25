@@ -46,13 +46,13 @@ class TeamProductsService:
             raise UserNotFound(user_id)
 
         total_price = product.price * quantity
-        if user.balance < total_price:
-            raise NotEnoughMoney(user.balance, total_price)
+        if user.team_balance < total_price:
+            raise NotEnoughMoney(user.team_balance, total_price)
 
         await self.purchases_repo.create(user.id, product_id, quantity)
 
-        new_balance = user.balance - total_price
-        await self.users_repo.set_balance(user.id, new_balance)
+        new_balance = user.team_balance - total_price
+        await self.users_repo.set_team_balance(user.id, new_balance)
 
         new_stock = product.stock - quantity
         await self.set_stock(product_id, new_stock)

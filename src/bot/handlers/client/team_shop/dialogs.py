@@ -19,7 +19,7 @@ view_available_products_window = Window(
         when=F["total_stock"],
     ),
     Const("Товаров в наличии нет", when=~F["total_stock"]),
-    Format("Баланс: {middleware_data[user].balance} червонцев\n", when=F["total_stock"]),
+    Format("Баланс: {middleware_data[user].team_balance} червонцев\n", when=F["total_stock"]),
     ScrollingGroup(
         Select(
             Format("{item.name} — {item.price} червонцев"),

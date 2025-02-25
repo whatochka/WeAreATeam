@@ -7,8 +7,9 @@ from dishka import FromDishka
 
 from bot.filters.roles import IsAdmin
 from bot.handlers.admin.users.view.states import ViewUserStates
-from core.ids import UserId
+from core.ids import UserId, Number
 from core.services.qrcodes import UserIdPrefix
+from core.services.users import UsersService
 from database.repos.users import UsersRepo
 
 router = Router(name=__file__)
@@ -41,9 +42,11 @@ async def delete_user(
     message: Message,
     command: CommandObject,
     users_repo: FromDishka[UsersRepo],
+    users_service: FromDishka[UsersService]
 ) -> None:
     if command.args and command.args.isdigit():
-        return await users_repo.delete(UserId(int(command.args)))
+        user = await users_service.users_repo.get_by_number(command.args)
+        return await users_repo.delete(user.id)
 
     text = "Формат: /delete <user_id>"
     await message.answer(text=text)

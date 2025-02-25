@@ -7,10 +7,15 @@ from core.exceptions import (
 )
 from core.ids import ProductId, UserId
 from core.services.roles import RolesService
+from core.services.users import UsersService
 from database.repos.logs import LogsRepo
 from database.repos.products import ProductsRepo
 from database.repos.purchases import PurchasesRepo
 from database.repos.users import UsersRepo
+from database.models.products import ProductModel
+from database.models.users import UserModel
+from dishka import FromDishka
+from ..exceptions import NotEnoughMoney
 
 
 class ProductsService:
@@ -21,12 +26,14 @@ class ProductsService:
         purchases_repo: PurchasesRepo,
         logs_repo: LogsRepo,
         roles_service: RolesService,
+        users_service: FromDishka[UsersService]
     ) -> None:
         self.products_repo = products_repo
         self.users_repo = users_repo
         self.purchases_repo = purchases_repo
         self.logs_repo = logs_repo
         self.roles_service = roles_service
+        self.users_service = users_service
 
     async def buy_product(
         self,
@@ -129,3 +136,16 @@ class ProductsService:
 
         refund_money = product.price * quantity
         return refund_money  # noqa: RET504
+
+    async def purchase(self, user: UserModel, product: ProductModel, quantity: int) -> None:
+        """Покупка товара с учетом скидки за медаль."""
+        discount_percentage = self.users_service.get_discount(user)
+        price_with_discount = product.price * (1 - discount_percentage / 100)  # 💰 Скидка на товар
+
+        total_price = int(price_with_discount * quantity)
+
+        if user.balance < total_price:
+            raise NotEnoughMoney
+
+        user.balance -= total_price
+        await self.users_repo.update(user.id, user.name, user.role)

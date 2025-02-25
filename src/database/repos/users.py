@@ -3,6 +3,7 @@ from sqlalchemy import delete, select, update
 from core.ids import TgId, UserId
 from database.models import UserModel, PreRegisteredUserModel
 from database.repos.base import BaseAlchemyRepo
+from database.models.users import Medal
 
 
 class UsersRepo(BaseAlchemyRepo):
@@ -11,9 +12,10 @@ class UsersRepo(BaseAlchemyRepo):
             tg_id: TgId,
             name: str | None = None,
             balance: int = 0,
+            team_balance: int = 0,
             role: str | None = None,
     ) -> UserModel:
-        user = UserModel(tg_id=tg_id, name=name, role=role, balance=balance)
+        user = UserModel(tg_id=tg_id, name=name, role=role, balance=balance, team_balance=team_balance)
         self.session.add(user)
         await self.session.flush()
         return user
@@ -54,6 +56,27 @@ class UsersRepo(BaseAlchemyRepo):
     async def set_balance(self, user_id: UserId, new_balance: int) -> None:
         query = (
             update(UserModel).where(UserModel.id == user_id).values(balance=new_balance)
+        )
+        await self.session.execute(query)
+        await self.session.flush()
+
+    async def set_balance_all(self, new_balance: int) -> None:
+        query = (
+            update(UserModel).values(balance=UserModel.balance + new_balance)
+        )
+        await self.session.execute(query)
+        await self.session.flush()
+
+    async def set_team_balance(self, user_id: UserId, new_balance: int) -> None:
+        query = (
+            update(UserModel).where(UserModel.id == user_id).values(team_balance=new_balance)
+        )
+        await self.session.execute(query)
+        await self.session.flush()
+
+    async def set_team_balance_all(self, new_balance: int) -> None:
+        query = (
+            update(UserModel).values(team_balance=UserModel.team_balance + new_balance)
         )
         await self.session.execute(query)
         await self.session.flush()
@@ -111,3 +134,8 @@ class UsersRepo(BaseAlchemyRepo):
     async def get_by_number(self, number: str) -> UserModel | None:
         query = select(UserModel).where(UserModel.number == number)
         return await self.session.scalar(query)
+
+    async def assign_medal(self, number: str, medal: Medal) -> None:
+        stmt = update(UserModel).where(UserModel.number == number).values(medal=medal)
+        await self.session.execute(stmt)
+        await self.session.commit()

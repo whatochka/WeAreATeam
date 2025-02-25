@@ -5,8 +5,16 @@ from database.models._mixins import CreatedAtMixin, UpdatedAtMixin
 from database.models.base import BaseAlchemyModel
 from passlib.context import CryptContext
 from database.models.pre_registred_users import PreRegisteredUserModel
+from enum import Enum as PyEnum
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+
+class Medal(PyEnum):
+    NONE = "none"
+    BRONZE = "bronze"
+    SILVER = "silver"
+    GOLD = "gold"
 
 
 class UserModel(CreatedAtMixin, UpdatedAtMixin, BaseAlchemyModel):
@@ -28,8 +36,10 @@ class UserModel(CreatedAtMixin, UpdatedAtMixin, BaseAlchemyModel):
     is_captain: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     role: Mapped[str] = mapped_column(String(16), nullable=False)
     balance: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    team_balance: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     qrcode_image_id: Mapped[str | None] = mapped_column(String(128), nullable=True, unique=True)
+    medal: Mapped[Medal] = mapped_column(String(16), default=Medal.NONE, nullable=False)
 
     @staticmethod
     def verify_password(password: str, password_hash: str) -> bool:
@@ -47,5 +57,6 @@ class UserModel(CreatedAtMixin, UpdatedAtMixin, BaseAlchemyModel):
             is_captain=registered_user.is_captain,
             role=registered_user.role if registered_user.role else "user",
             balance=0,
+            team_balance=0,
             is_active=True,
         )

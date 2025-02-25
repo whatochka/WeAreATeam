@@ -10,6 +10,7 @@ from .view.states import ViewUserStates
 
 UserAdminInfoText = Multi(
     Format("Номер: <code>{view_user.number}</code>"),
+    Format("ID: <code>{view_user.id}</code>"),
     Format("ФИО: <b>{view_user.name}</b> - {role}"),
     Format("Номер: <b>{view_user.phone}</b>"),
     Format("ТГ: <b>@{view_user.tg_username}</b>"),

@@ -10,16 +10,17 @@ from core.services.qrcode_saver import QRCodeSaver
 from database.repos.users import UsersRepo
 
 from ..cart.states import CartUserStates
+from ..team_cart.states import TeamCartUserStates
 from ..role.states import RoleUserStates
 from ..task.view.states import TaskUserStates
 
 
 @inject
 async def id_input_handler(
-    message: Message,
-    _: MessageInput,
-    dialog_manager: DialogManager,
-    users_repo: FromDishka[UsersRepo],
+        message: Message,
+        _: MessageInput,
+        dialog_manager: DialogManager,
+        users_repo: FromDishka[UsersRepo],
 ) -> None:
     user_number = Number(message.text)
 
@@ -37,9 +38,9 @@ async def id_input_handler(
 
 @inject
 async def on_check_cart(
-    _: CallbackQuery,
-    __: Button,
-    dialog_manager: DialogManager,
+        _: CallbackQuery,
+        __: Button,
+        dialog_manager: DialogManager,
 ) -> None:
     user_id: UserId = dialog_manager.dialog_data["view_user_id"]
     await dialog_manager.start(
@@ -48,10 +49,23 @@ async def on_check_cart(
     )
 
 
+@inject
+async def on_check_team_cart(
+        _: CallbackQuery,
+        __: Button,
+        dialog_manager: DialogManager,
+) -> None:
+    user_id: UserId = dialog_manager.dialog_data["view_user_id"]
+    await dialog_manager.start(
+        state=TeamCartUserStates.cart,
+        data={"view_user_id": user_id},
+    )
+
+
 async def on_set_role(
-    _: CallbackQuery,
-    __: Button,
-    dialog_manager: DialogManager,
+        _: CallbackQuery,
+        __: Button,
+        dialog_manager: DialogManager,
 ) -> None:
     user_id: UserId = dialog_manager.dialog_data["view_user_id"]
     await dialog_manager.start(
@@ -62,11 +76,11 @@ async def on_set_role(
 
 @inject
 async def on_view_qrcode(
-    callback: CallbackQuery,
-    _: Button,
-    dialog_manager: DialogManager,
-    users_repo: FromDishka[UsersRepo],
-    qrcode_saver: FromDishka[QRCodeSaver],
+        callback: CallbackQuery,
+        _: Button,
+        dialog_manager: DialogManager,
+        users_repo: FromDishka[UsersRepo],
+        qrcode_saver: FromDishka[QRCodeSaver],
 ) -> None:
     user_id: UserId = dialog_manager.dialog_data["view_user_id"]
     user = await users_repo.get_by_id(user_id)
@@ -80,9 +94,9 @@ async def on_view_qrcode(
 
 
 async def on_view_role(
-    _: CallbackQuery,
-    __: Button,
-    dialog_manager: DialogManager,
+        _: CallbackQuery,
+        __: Button,
+        dialog_manager: DialogManager,
 ) -> None:
     user_id: UserId = dialog_manager.dialog_data["view_user_id"]
     await dialog_manager.start(
@@ -92,9 +106,9 @@ async def on_view_role(
 
 
 async def on_view_task(
-    _: CallbackQuery,
-    __: Button,
-    dialog_manager: DialogManager,
+        _: CallbackQuery,
+        __: Button,
+        dialog_manager: DialogManager,
 ) -> None:
     user_id: UserId = dialog_manager.dialog_data["view_user_id"]
     await dialog_manager.start(TaskUserStates.task, data={"view_user_id": user_id})

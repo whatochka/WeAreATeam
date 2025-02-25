@@ -1,5 +1,5 @@
 from core.enums import RightsRole
-from core.ids import ProductId, SecretId, TaskId, UserId
+from core.ids import ProductId, SecretId, TaskId, UserId, Number
 
 
 class ServiceException(Exception):
@@ -29,6 +29,11 @@ class EntityNotFound(ServiceException):
 class UserNotFound(EntityNotFound):
     def __init__(self, user_id: UserId) -> None:
         super().__init__(f"Пользователь с айди {user_id} не найден")
+
+
+class UserNumberNotFound(EntityNotFound):
+    def __init__(self, user_number: Number) -> None:
+        super().__init__(f"Пользователь с айди {user_number} не найден")
 
 
 class SecretNotFound(EntityNotFound):
@@ -67,7 +72,7 @@ class NotEnoughStock(ServiceException):
 class NotEnoughMoney(ServiceException):
     def __init__(self, current_balance: int, excepted_balance: int) -> None:
         super().__init__(
-            "Недостаточно Пятаков на балансе.\n"
+            "Недостаточно червонцев на балансе.\n"
             f"Текущее: {current_balance}, ожидаемое: {excepted_balance}",
         )
 

@@ -5,14 +5,24 @@ from core.exceptions import (
     NotEnoughMoney,
     RoleNotFound,
     UserNotFound,
+    UserNumberNotFound,
 )
-from core.ids import UserId
+from core.ids import UserId, Number
 from core.services.roles import RolesService
 from database.repos.logs import LogsRepo
 from database.repos.users import UsersRepo
+from database.models.users import Medal
+from database.models.users import UserModel
 
 
 class UsersService:
+    MEDAL_DISCOUNTS = {
+        Medal.NONE: 0,
+        Medal.BRONZE: 10,
+        Medal.SILVER: 15,
+        Medal.GOLD: 20,
+    }
+
     def __init__(
         self,
         users_repo: UsersRepo,
@@ -35,7 +45,7 @@ class UsersService:
 
         await self.roles_service.is_admin(master_id)
 
-        if user.balance + amount < 0:  # если отнимаем
+        if user.balance + amount < 0:
             raise InvalidValueAfterUpdate(
                 f"Баланс станет отрицательным. Текущий: {user.balance}",
             )
@@ -49,6 +59,65 @@ class UsersService:
         )
 
         return new_balance
+
+    async def update_balance_all(
+        self,
+        master_id: UserId,
+        amount: int,
+    ) -> int:
+        await self.roles_service.is_admin(master_id)
+
+        await self.users_repo.set_balance_all(amount)
+
+        await self.logs_repo.log_action(
+            master_id,
+            f"Add money all users {amount=} by {master_id=}",
+        )
+
+        return amount
+
+    async def update_team_balance(
+            self,
+            slave_id: UserId,
+            master_id: UserId,
+            amount: int,
+    ) -> int:
+        user = await self.users_repo.get_by_id(slave_id)
+        if user is None:
+            raise UserNotFound(slave_id)
+
+        await self.roles_service.is_admin(master_id)
+
+        if user.team_balance + amount < 0:
+            raise InvalidValueAfterUpdate(
+                f"Баланс станет отрицательным. Текущий: {user.team_balance}",
+            )
+
+        new_balance = user.team_balance + amount
+        await self.users_repo.set_team_balance(slave_id, new_balance)
+
+        await self.logs_repo.log_action(
+            slave_id,
+            f"Add team money {amount=} by {master_id=}",
+        )
+
+        return new_balance
+
+    async def update_team_balance_all(
+            self,
+            master_id: UserId,
+            amount: int,
+    ) -> int:
+        await self.roles_service.is_admin(master_id)
+
+        await self.users_repo.set_team_balance_all(amount)
+
+        await self.logs_repo.log_action(
+            master_id,
+            f"Add team money all users {amount=} by {master_id=}",
+        )
+
+        return amount
 
     async def set_balance(
         self,
@@ -129,3 +198,10 @@ class UsersService:
         await self.users_repo.set_role(slave_id, role)
 
         await self.logs_repo.log_action(slave_id, f"New role {role=} by {master_id=}")
+
+    async def assign_medal(self, number: str, medal: str) -> None:
+        medal_enum = Medal[medal.upper()]
+        await self.users_repo.assign_medal(number, medal_enum)
+
+    async def get_discount(self, user: UserModel) -> int:
+        return self.MEDAL_DISCOUNTS[user.medal]

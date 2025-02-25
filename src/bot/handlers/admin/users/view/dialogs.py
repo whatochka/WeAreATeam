@@ -14,6 +14,7 @@ from ..on_actions import UserAdminInfoText
 from .on_actions import (
     id_input_handler,
     on_check_cart,
+    on_check_team_cart,
     on_set_role,
     on_view_qrcode,
     on_view_task,
@@ -39,6 +40,12 @@ view_user_window = Window(
             Const("🧺 Корзина"),
             id="cart",
             on_click=on_check_cart,
+            when=IsAdmin(),
+        ),
+        Button(
+            Const("📦 Командная корзина"),
+            id="team_cart",
+            on_click=on_check_team_cart,
             when=IsAdmin(),
         ),
         Button(

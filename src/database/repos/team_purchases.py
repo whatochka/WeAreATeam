@@ -8,7 +8,7 @@ from database.repos.base import BaseAlchemyRepo
 
 
 @dataclass
-class PurchasesInfo:
+class TeamPurchasesInfo:
     total_products: int
     total_purchases: int
     product_to_quantity: list[tuple[tuple[ProductId, str], int]]
@@ -71,7 +71,7 @@ class TeamPurchasesRepo(BaseAlchemyRepo):
     @staticmethod
     def format_purchases(
             purchases: list[tuple[TeamProductModel, TeamPurchasesModel]],
-    ) -> PurchasesInfo:
+    ) -> TeamPurchasesInfo:
         total_products = len({i[0].id for i in purchases})
         total_purchases = sum(i[1].quantity for i in purchases)
 
@@ -90,7 +90,7 @@ class TeamPurchasesRepo(BaseAlchemyRepo):
             for (product_id, product_name), quantity in sorted_product_to_quntity
         )
 
-        return PurchasesInfo(
+        return TeamPurchasesInfo(
             total_products,
             total_purchases,
             sorted_product_to_quntity,

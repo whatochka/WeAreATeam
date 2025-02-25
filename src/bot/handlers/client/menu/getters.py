@@ -6,6 +6,7 @@ from dishka.integrations.aiogram_dialog import inject
 
 from bot.dialogs.flags import FORCE_GET_USER_KEY
 from bot.translate import translate_role
+from core.enums import Medal
 from database.models import UserModel
 from database.repos.tasks import TasksRepo
 from database.repos.users import UsersRepo
@@ -33,5 +34,5 @@ async def get_user_info(
         "number": user.number,
         "team_name": user.team_name,
         "team_balance": user.team_balance,
-        "medal": user.medal,
+        "medal": user.medal if user.medal is not None else Medal.NONE,
     }

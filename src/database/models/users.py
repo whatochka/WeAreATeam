@@ -22,17 +22,17 @@ class UserModel(CreatedAtMixin, UpdatedAtMixin, BaseAlchemyModel):
     )
     number: Mapped[str] = mapped_column(String(3), unique=True, nullable=True)
     tg_id: Mapped[TgId] = mapped_column(BigInteger, nullable=False, unique=True, index=True)
-    tg_username: Mapped[str | None] = mapped_column(String(32), unique=True, nullable=True)
+    tg_username: Mapped[str | None] = mapped_column(String(64), unique=True, nullable=True)
     name: Mapped[str] = mapped_column(String(64), nullable=True)
-    phone: Mapped[str | None] = mapped_column(String(16), nullable=True)
-    team_name: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    phone: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    team_name: Mapped[str | None] = mapped_column(String(64), nullable=True)
     is_captain: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
-    role: Mapped[str] = mapped_column(String(16), nullable=False)
+    role: Mapped[str] = mapped_column(String(64), nullable=False)
     balance: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     team_balance: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     qrcode_image_id: Mapped[str | None] = mapped_column(String(128), nullable=True, unique=True)
-    medal: Mapped[Medal] = mapped_column(String(16), default=Medal.NONE, nullable=False)
+    medal: Mapped[Medal] = mapped_column(String(64), default=Medal.NONE, nullable=False)
 
     @staticmethod
     def verify_password(password: str, password_hash: str) -> bool:

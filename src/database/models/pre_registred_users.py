@@ -10,14 +10,14 @@ class PreRegisteredUserModel(BaseAlchemyModel):
     __tablename__ = "pre_registered_users"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    number: Mapped[str] = mapped_column(String(3), unique=True, nullable=False)
+    number: Mapped[str] = mapped_column(String(64), unique=True, nullable=False)
     password_hash: Mapped[str] = mapped_column(String(128), nullable=False)
     name: Mapped[str] = mapped_column(String(64), nullable=False)
-    tg_username: Mapped[str | None] = mapped_column(String(32), unique=True, nullable=True)
-    phone: Mapped[str | None] = mapped_column(String(16), nullable=True)
-    team_name: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    tg_username: Mapped[str | None] = mapped_column(String(64), unique=True, nullable=True)
+    phone: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    team_name: Mapped[str | None] = mapped_column(String(64), nullable=True)
     is_captain: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
-    role: Mapped[str] = mapped_column(String(16), nullable=False)
+    role: Mapped[str] = mapped_column(String(64), nullable=False)
 
     @staticmethod
     def hash_password(password: str) -> str:

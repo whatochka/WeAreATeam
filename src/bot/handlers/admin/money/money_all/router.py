@@ -19,7 +19,7 @@ async def admin_update_money(
         args = command.args.split()
         amount = int(args[0])
         user = await users_service.users_repo.get_user_by_tg_id(message.from_user.id)
-        await users_service.update_balance_all(user.id, amount)
-        await message.answer(f"Добавлено {amount} всем пользователям")
+        await users_service.update_balance_all_with_medal(user.id, amount)
+        await message.answer(f"Добавлено {amount}, {int(amount * 1.5)}, {int(amount * 1.7)}, {int(amount * 2)} всем пользователям")
     else:
         await message.answer("Формат: /money_all <amount>", parse_mode=None)

@@ -51,21 +51,38 @@ class UsersService:
 
         return new_balance
 
-    async def update_balance_all(
+    async def update_balance_all_with_medal(
         self,
         master_id: UserId,
-        amount: int,
+        base_amount: int,
     ) -> int:
+        users = await self.users_repo.get_all()
+        if not users:
+            return 0
+
         await self.roles_service.is_admin(master_id)
 
-        await self.users_repo.set_balance_all(amount)
+        medal_multiplier = {
+            Medal.NONE: 1.0,
+            Medal.BRONZE: 1.5,
+            Medal.SILVER: 1.7,
+            Medal.GOLD: 2.0,
+        }
 
-        await self.logs_repo.log_action(
-            master_id,
-            f"Add money all users {amount=} by {master_id=}",
-        )
+        count = 0
+        for user in users:
+            amount = int(base_amount * medal_multiplier.get(user.medal, 1.0))
+            if user.balance + amount >= 0:
+                new_balance = user.balance + amount
+                await self.users_repo.set_balance(user.id, new_balance)
+                count += 1
 
-        return amount
+                await self.logs_repo.log_action(
+                    user.id,
+                    f"Add money {amount=} considering medal {user.medal} by admin {master_id=}",
+                )
+
+        return count
 
     async def update_team_balance(
             self,

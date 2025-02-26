@@ -17,7 +17,7 @@ async def get_view_user_info(
 ) -> dict[str, Any]:
     view_user_id: UserId = dialog_manager.dialog_data["view_user_id"]
     user = await users_repo.get_by_id(view_user_id)
-    role = translate_role(user.role, "Пользователь")
+    role = translate_role(user.role, "Пионер")
     return {
         "view_user": user,
         "role": role,

@@ -43,7 +43,7 @@ view_user_window = Window(
             when=IsAdmin(),
         ),
         Button(
-            Const("📦 Командная корзина"),
+            Const("📦 Отрядная корзина"),
             id="team_cart",
             on_click=on_check_team_cart,
             when=IsAdmin(),

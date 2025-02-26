@@ -17,7 +17,7 @@ from .on_actions import (
 from .states import AdminPanelStates
 
 admin_panel_window = Window(
-    Format("❗Админ-панель, ты - <u>{role}</u>\n"),
+    Format("🛠 <b>Админ-панель</b>\n\n🫵 <b>Ты - <u>{role}</u></b>\n"),
     Format(
         "👨🏻‍🎓 Зарегистрировано <b>{all_users}</b>, активно <b>{active_users}</b>",
         when=IsAdmin(),
@@ -42,7 +42,7 @@ admin_panel_window = Window(
             when=IsAdmin(),
         ),
         Button(
-            Const("🙌 Командные товары"),
+            Const("🙌 Отрядные товары"),
             id="products_team",
             on_click=on_go_to_team_shop,
             when=IsAdmin(),

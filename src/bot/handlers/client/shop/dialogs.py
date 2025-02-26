@@ -12,14 +12,10 @@ from .states import ShopStates
 
 
 view_available_products_window = Window(
-    Const("Список товаров 🛍️\n"),
-    Format(
-        "В наличии <b>{products_len}</b> наименований "
-        "в количестве <b>{total_stock}</b> штук",
-        when=F["total_stock"],
-    ),
-    Const("Товаров в наличии нет", when=~F["total_stock"]),
-    Format("Баланс: {middleware_data[user].balance} червонцев\n", when=F["total_stock"]),
+    Const("🛍️ <b>Магазин</b>\n"),
+    Format("📦 В наличии: <b>{products_len}</b> наименований, всего <b>{total_stock}</b> шт."),
+    Const("⚠️ <b>Товаров в наличии нет</b>", when=~F["total_stock"]),
+    Format("💳 <b>Твой баланс:</b> {middleware_data[user].balance} червонцев\n", when=F["total_stock"]),
     ScrollingGroup(
         Select(
             Format("{item.name} — {item.price} червонцев"),
@@ -41,10 +37,10 @@ view_available_products_window = Window(
 )
 
 view_one_product_window = Window(
-    Format("<b>{product.name}</b>\n"),
-    Format("Цена: {product.price} червонцев"),
-    Format("В наличии {product.stock} шт.\n"),
-    Format("{product.description}"),
+    Format("🛒 <b>{product.name}</b>\n"),
+    Format("💸 <b>Цена:</b> {product.price} червонцев"),
+    Format("📦 <b>В наличии:</b> {product.stock} шт.\n"),
+    Format("📝 <b>Описание:</b>\n{product.description}"),
     Button(Const("💵 Купить"), id="buy", on_click=on_buy_product, when=F["can_buy"]),
     Back(Const("⏪ Все товары")),
     getter=[get_one_product, get_can_buy],

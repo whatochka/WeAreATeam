@@ -41,7 +41,7 @@ async def on_buy_product(
     else:
         await products_service.buy_product(user.id, product.id, 1)
         dialog_manager.dialog_data["final_message"] = (
-            "Товар оплачен и добавлен в корзину!"
+            "🧺 Товар оплачен и добавлен в корзину!"
         )
 
     await dialog_manager.next()

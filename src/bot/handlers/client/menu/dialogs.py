@@ -20,18 +20,19 @@ from .states import MenuStates
 
 menu_dialog = Dialog(
     Window(
-        Const("<b>Главное меню</b>\n"),
-        Format("Твой номер: <code>{number}</code>"),
-        Format("Команда: <b>{team_name}</b>"),
-        Format("Баланс: {balance} <b>червонцев</b>\n"),
-        Format("Медаль: {medal}\n", when=F["medal"] != Medal.NONE),
-        Format("Командный баланс: {team_balance} <b>червонцев</b>\n", when=IsWithRole()),
-        Format("Ты - <u>{role}</u>", when=IsWithRole()),
+        Const("🏠 <b>Главное меню</b>\n"),
+        Format("🔢 <b>Твой номер:</b> <code>{number}</code>"),
+        Format("👥 <b>Команда:</b> <b>{team_name}</b>"),
+        Format("💰 <b>Баланс:</b> {balance} <b>червонцев</b>\n"),
+        Format("🏅 <b>Медаль:</b> {medal}\n", when=F["medal"] != Medal.NONE),
+        Format("💸 <b>Отрядный баланс:</b> {team_balance} <b>червонцев</b>\n", when=IsWithRole()),
+        Format("🧩 <b>Твой статус:</b> <u>{role}</u>", when=IsWithRole()),
+
         Group(
             Button(Const("🛍️ Магазин"), id="shop", on_click=on_shop),
-            Button(Const("🙌 Командный магазин"), id="team_shop", on_click=on_team_shop, when=IsWithRole()),
+            Button(Const("🙌 Отрядный магазин"), id="team_shop", on_click=on_team_shop, when=IsWithRole()),
             Button(Const("🧺 Корзина"), id="cart", on_click=on_cart),
-            Button(Const("📦 Командная корзина"), id="team_cart", on_click=on_team_cart, when=IsWithRole()),
+            Button(Const("📦 Отрядная корзина"), id="team_cart", on_click=on_team_cart, when=IsWithRole()),
             # Button(
             #     Const("💸 Перевод"),
             #     id="transfer",

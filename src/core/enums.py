@@ -9,9 +9,9 @@ class RightsRole(StrEnum, ValuesEnum):
 
 class Medal(StrEnum, ValuesEnum):
     NONE = "NONE"
-    BRONZE = "BRONZE"
-    SILVER = "SILVER"
-    GOLD = "GOLD"
+    BRONZE = "🥉"
+    SILVER = "🥈"
+    GOLD = "🥇"
 
 
 ALL_ROLES = (*RightsRole.values(), None)

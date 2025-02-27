@@ -25,7 +25,7 @@ async def import_users_from_csv(csv_file: str, session: AsyncSession):
             role = row.get("role")
             if not role:
                 role = (
-                    "admin" if number == "000"
+                    "admin" if number == "007"
                     else "organizer" if number.startswith("0")
                     else "None"
                 )
